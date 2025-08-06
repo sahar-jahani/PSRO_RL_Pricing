@@ -1,4 +1,4 @@
-# Pricing Game Strategy Evolution via PSRO and Multi-Agent Reinforcement Learning 
+# Pricing Game Strategy Evolution via PSRO and Reinforcement Learning 
 
 This project investigates the existence of a stable equilibrium with higher returns than the Subgame Perfect Equilibrium (SPE) for players in an asymmetric duopoly pricing game with demand inertia.
 
