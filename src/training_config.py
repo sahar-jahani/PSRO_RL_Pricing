@@ -56,11 +56,12 @@ class StartMode(Enum):
     random = 1
     multiGuess = 2
     allVsSpe=3
+    myopic=4
     
 def len_initial_game(start_mode:StartMode)->int:
     if start_mode==StartMode.myopicConstGuess or start_mode==StartMode.multiGuess:
         return 3
-    elif start_mode==StartMode.random:
+    elif start_mode==StartMode.random or start_mode==StartMode.myopic:
         return 1
     elif start_mode==StartMode.allVsSpe:
         return 7
@@ -85,6 +86,10 @@ def initial_matrix(env_class, start_mode, database, game_name):
 
         init_low = [strt1, strt2, strt3]
         init_high = [strt1, strt2, strt3]
+    elif start_mode == StartMode.myopic:
+        strt1 = Strategy(StrategyType.static, model_or_func=ad.myopic, name="myopic")
+        init_low = [strt1]
+        init_high = [strt1]
     elif start_mode == StartMode.allVsSpe:
         strt0 = Strategy(
             StrategyType.static, model_or_func=ad.spe, name="spe", first_price=132)

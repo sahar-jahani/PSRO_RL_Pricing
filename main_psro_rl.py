@@ -56,9 +56,9 @@ if __name__ == "__main__":
 
         num_rounds = 10
         num_procs = 4  # Works best with num_procs = 1 or >= 4
-        start_mode = tc.StartMode.random
+        start_mode = tc.StartMode.myopic
 
-        game_name = 'test'
+        game_name = 'myopic'
 
         db_name = f"{game_name}.db"
         db = DataBase(db_name)
@@ -132,13 +132,13 @@ if __name__ == "__main__":
                             extra_input = tc.get_proc_input(
                                 seed=new_seed,
                                 proc_ind=random_proc_id,
-                                low_mixed_strat=low_mixed_strategy,
-                                high_mixed_strat=high_mixed_strategy,
+                                low_mixed_strt=low_mixed_strategy,
+                                high_mixed_strt=high_mixed_strategy,
                                 target_payoffs=[equilibrium.row_payoff, equilibrium.col_payoff],
                                 job_name=game_name,
                                 env_class=env_class,
                                 num_ep_coef=episode_scaling_factor,
-                                equilibrium_id=equilibrium_id_map[equilibrium],
+                                equi_id=equilibrium_id_map[equilibrium],
                                 db=db
                             )
                             proc_inputs.append(extra_input)
