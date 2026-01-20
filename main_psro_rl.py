@@ -54,11 +54,11 @@ if __name__ == "__main__":
 
         env_class = ConPricingGame
 
-        num_rounds = 10
-        num_procs = 4  # Works best with num_procs = 1 or >= 4
-        start_mode = tc.StartMode.myopic
+        num_rounds = 50
+        num_procs = 8  # Works best with num_procs = 1 or >= 4
+        start_mode = tc.StartMode.myopicImit
 
-        game_name = 'myopic'
+        game_name = 'myopicImit'
 
         db_name = f"{game_name}.db"
         db = DataBase(db_name)
