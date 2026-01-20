@@ -1,36 +1,52 @@
-# Pricing Game Strategy Evolution via PSRO and Reinforcement Learning 
+# Empirical Game-Theoretic Analysis of Pricing Games Using Reinforcement Learning
 
-This project investigates the existence of a stable equilibrium with higher returns than the Subgame Perfect Equilibrium (SPE) for players in an asymmetric duopoly pricing game with demand inertia.
+This repository contains the implementation of the experiments studied in **Part II** of the published [PhD thesis](https://etheses.lse.ac.uk/4921/). The experiments were run on [Fabian, the High Performance Computing (HPC)](https://info.lse.ac.uk/staff/divisions/dts/services/fabian/Fabian) cluster at the London School of Economics.
 
-This class of games was originally studied by Reinhard Selten in 1965, who defined and computed the Subgame Perfect Equilibria. Later, in 1992, Claudia Keser conducted an experimental study using this game, where game theorists submitted their strategies via flowcharts to compete in the setting.
+This project studies equilibrium behavior and emergent collusion in a **multi-round asymmetric duopoly pricing game with demand inertia**, with a particular focus on identifying stable outcomes that yield higher returns than the **Subgame Perfect Equilibrium (SPE)**.
 
-In this project, we utilise reinforcement learning (RL) to train low-cost and high-cost agents to play the 25-stage pricing game, as studied in Keser’s work. To approximate the infinite game over all possible pricing strategies, we use the **Policy-Space Response Oracles (PSRO)** method to construct a meta-game that works as an evolving approximation.
+The underlying class of pricing games was originally studied by **Reinhard Selten (1965)**, who characterized and computed the SPE. Later, **Claudia Keser (1992)** conducted experimental studies of this game, in which human-submitted strategies (represented as flowcharts) were evaluated in a competitive tournament setting.
 
-The meta-game begins with a set of initial strategies, which may be random or predefined deterministic strategies. We compute the equilibrium of the current meta-game and then train new RL agents as approximate best responses to the equilibrium strategies. If these agents achieve returns higher than the equilibrium payoff, they are added to the meta-game. This iterative process expands the strategy space and continually extends the meta-game.
+In this work, we extend this line of research by using **reinforcement learning (RL)** to model strategic behavior in the pricing game. We train **low-cost** and **high-cost** pricing agents to compete in a **finite-horizon (25-round)** version of the game studied by Keser. The goal is to empirically study the **Nash equilibria** of the evolving game and to identify the conditions under which independently trained learning agents exhibit **collusive behavior**. Understanding these conditions is important because it provides insights into how to prevent sellers from colluding on pricing in the market, thereby protecting consumer rights.
 
-The resulting meta-game approximates the infinite strategy space of the original pricing game, and its computed equilibria approximate the equilibria of the full game.
+---
 
-## 🧠 Reinforcement Learning Framework
+## Methodology
 
-- We use the [Stable-Baselines3](https://github.com/DLR-RM/stable-baselines3) framework.
-- The pricing game is defined as a custom environment compatible with the **Gymnasium API**, implemented in the `ConPricingGame` class.
-- We primarily use the following algorithms:
+To approximate the infinite strategy space of the pricing game, we use the **Policy Space Response Oracles (PSRO)** framework. PSRO constructs an evolving meta-game over a finite set of strategies, providing an empirical approximation to the full game.
+
+The procedure is as follows:
+
+- The meta-game is initialized with a set of pricing strategies, which may be random or predefined deterministic policies.
+- An equilibrium of the current meta-game is computed.
+- New RL agents are trained as approximate best responses to the equilibrium strategies using policy-gradient methods.
+- If a newly trained agent achieves higher expected returns than the current equilibrium payoff, it is added to the meta-game.
+- This iterative process continues, expanding the strategy space and refining the meta-game.
+
+Through repeated iterations, the meta-game grows to represent increasingly sophisticated strategic behavior. The equilibria computed in the meta-game serve as **empirical approximations** to equilibria in the original infinite-strategy pricing game.
+
+---
+
+## 🧠 Evolutionary Framework
+
+- We use reinforcement learning algorithms implemented in the [Stable-Baselines3](https://github.com/DLR-RM/stable-baselines3) library.  
+  The framework is fully compatible with all learning algorithms provided by this library, including:
   - **Proximal Policy Optimization (PPO)**
   - **Soft Actor-Critic (SAC)**
+- The pricing game is implemented as a custom environment compatible with the **Gymnasium API**, defined in the `ConPricingGame` class.
+
 
 ## ⚙️ Multiprocessing & Data Management
 
-- We use **multiprocessing** to speed up training and evaluation.
-- The `BimatrixGame` class represents the meta-game.
-- All data (trained agents, meta-games, equilibria, logs) is saved using custom-designed classes and databases for efficient data management.
+- **Multiprocessing** is used to accelerate training and evaluation.
+- The `BimatrixGame` class represents the evolving meta-game.
+- All data, including trained agents, meta-games, equilibria, and logs, is stored using custom-designed data management classes and database. 
 
 ## 🎯 Equilibrium Enumeration in PSRO
 
-Nash equilibria of the evolving bimatrix meta-game—central to the **Policy Space Response Oracles (PSRO)** framework—are computed using the **Lemke algorithm**, implemented by Prof. **Bernhard von Stengel**.
+Nash equilibria of the evolving bimatrix meta-game, referred to as **Meta-Strategy Solver** in the **Policy Space Response Oracles (PSRO)** framework, are computed using the **Lemke algorithm**, implemented by Prof. **Bernhard von Stengel**.
 
-📁 The source code for the solver is located in the `src/equilibrium_solver/` directory.
+📁 The source code for the equilibrium solver is located in the `src/equilibrium_solver/` directory.
 
----
 ## 🛠️ Installation
 
 Before running the training script, make sure you have the required packages installed.
